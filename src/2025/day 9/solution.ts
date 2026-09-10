@@ -1,10 +1,9 @@
-import { createPrinter } from "typescript";
-import { testData, rawData } from "./data.ts";
-console.time("Tijdsduur");
+import { testData, rawData } from './data.ts';
+console.time('Tijdsduur');
 
 const data = rawData;
 
-const dataRows = data.split("\n");
+const dataRows = data.split('\n');
 
 // make combinations of points in the grid to form rectangle,
 // first number is x coördinate, second is y.
@@ -13,12 +12,12 @@ const dataRows = data.split("\n");
 let maxSurface = 0;
 
 dataRows.forEach((firstTile, i) => {
-  const tile1 = firstTile.split(",");
+  const tile1 = firstTile.split(',');
   const x1 = Number(tile1[0]);
   const y1 = Number(tile1[1]);
 
   for (let j = i + 1; j < dataRows.length; j++) {
-    const tile2 = dataRows[j].split(",");
+    const tile2 = dataRows[j]!.split(',');
     const x2 = Number(tile2[0]);
     const y2 = Number(tile2[1]);
 
@@ -30,7 +29,7 @@ dataRows.forEach((firstTile, i) => {
   }
 });
 
-console.log("firstAnswer: " + maxSurface);
+console.log('firstAnswer: ' + maxSurface);
 
 // part 2
 /**
@@ -41,18 +40,18 @@ console.log("firstAnswer: " + maxSurface);
 
 // find out max size of full grid, make array of array's to represent this grid.
 
-let yPaths = [];
-let xPaths = [];
+let yPaths: any[] = [];
+let xPaths: any[] = [];
 
 maxSurface = 0;
 
 dataRows.forEach((row, i) => {
-  const tile = row.split(",");
+  const tile = row.split(',');
   const xTile = Number(tile[0]);
   const yTile = Number(tile[1]);
 
   const tile2Raw = i == dataRows.length - 1 ? dataRows[0] : dataRows[i + 1];
-  const tile2 = tile2Raw?.split(",");
+  const tile2 = tile2Raw!.split(',');
   const xTile2 = Number(tile2[0]);
   const yTile2 = Number(tile2[1]);
 
@@ -77,7 +76,7 @@ dataRows.forEach((row, i) => {
 xPaths.sort((a, b) => a.y - b.y);
 yPaths.sort((a, b) => a.x - b.x);
 
-let coveredTiles = [];
+let coveredTiles: any[] = [];
 
 xPaths.forEach((path, i) => {
   const y = path.y;
@@ -145,7 +144,7 @@ xPaths.forEach((path, i) => {
                     ranges.push(range);
                     nextRanges.push({ start: range.start, eind: start });
                     nextRanges.push({ start: eind, eind: range.eind });
-                    console.log("dit");
+                    console.log('dit');
                   }
                 }
               }
@@ -172,12 +171,12 @@ xPaths.forEach((path, i) => {
 
 // Check if all values are covered
 dataRows.forEach((firstTile, k) => {
-  const tile1 = firstTile.split(",");
+  const tile1 = firstTile.split(',');
   const x1 = Number(tile1[0]);
   const y1 = Number(tile1[1]);
 
   for (let j = k + 1; j < dataRows.length; j++) {
-    const tile2 = dataRows[j].split(",");
+    const tile2 = dataRows[j]!.split(',');
     const x2 = Number(tile2[0]);
     const y2 = Number(tile2[1]);
 
@@ -201,8 +200,8 @@ dataRows.forEach((firstTile, k) => {
       }
     }
 
-    for (let m = indexCheckMin; m <= indexCheckMax; m++) {
-      const rowRanges = coveredTiles[m].ranges;
+    for (let m = indexCheckMin; m <= indexCheckMax!; m++) {
+      const rowRanges: { start: number; eind: number }[] = coveredTiles[m].ranges;
 
       let rowOk = false;
 
@@ -232,6 +231,6 @@ dataRows.forEach((firstTile, k) => {
 
 console.log(xPaths);
 
-console.log("secondAnswer: " + maxSurface);
+console.log('secondAnswer: ' + maxSurface);
 // 1473551379 BINGO!!!
-console.timeEnd("Tijdsduur");
+console.timeEnd('Tijdsduur');

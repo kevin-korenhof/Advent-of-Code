@@ -1,14 +1,14 @@
-import { testData, rawData } from "./data.ts";
+import { testData, rawData } from './data.ts';
 
 const data = rawData;
 
-const dataRows = data.split("\n");
+const dataRows = data.split('\n');
 
 let firstAnswer = 0;
 
 const nmrColumns = dataRows[0]?.length as number;
 
-const start = dataRows[0]?.indexOf("S");
+const start = dataRows[0]?.indexOf('S');
 7;
 
 let beamPositions = [];
@@ -16,12 +16,12 @@ let beamPositions = [];
 dataRows.forEach((row, i) => {
   if (i == 0) {
     for (let j = 0; j < nmrColumns; j++) {
-      beamPositions.push(row[j] == "S" ? true : false);
+      beamPositions.push(row[j] == 'S' ? true : false);
     }
   } else {
     for (let j = 0; j < nmrColumns; j++) {
       // if a . keep bolean, if ^, change
-      if (row[j] == "^" && beamPositions[j] == true) {
+      if (row[j] == '^' && beamPositions[j] == true) {
         beamPositions[j - 1] = true;
         beamPositions[j] = false;
         beamPositions[j + 1] = true;
@@ -40,14 +40,15 @@ let paths: number[] = [];
 dataRows.forEach((row, i) => {
   if (i == 0) {
     for (let j = 0; j < nmrColumns; j++) {
-      paths.push(row[j] == "S" ? 1 : 0);
+      paths.push(row[j] == 'S' ? 1 : 0);
     }
   } else {
     let newPaths = paths;
+
     for (let j = 0; j < nmrColumns; j++) {
-      if (row[j] == "^") {
-        newPaths[j - 1] = newPaths[j - 1] + paths[j];
-        newPaths[j + 1] = newPaths[j + 1] + paths[j];
+      if (row[j] == '^') {
+        newPaths[j - 1] = newPaths[j - 1]! + paths[j]!;
+        newPaths[j + 1] = newPaths[j + 1]! + paths[j]!;
         newPaths[j] = 0;
       }
     }

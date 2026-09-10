@@ -1,9 +1,9 @@
-import { testData, rawData } from "./data.ts";
-console.time("Tijdsduur");
+import { testData, rawData } from './data.ts';
+console.time('Tijdsduur');
 
 const data = rawData;
 
-const dataRows = data.split("\n");
+const dataRows = data.split('\n');
 
 type boxCoodinates = {
   x: number;
@@ -18,7 +18,7 @@ type circuitOption = {
 };
 
 function extractCoordinates(boxData: string): boxCoodinates {
-  const data = boxData.split(",");
+  const data = boxData.split(',');
   const coordinates = {
     x: Number(data[0]),
     y: Number(data[1]),
@@ -29,11 +29,7 @@ function extractCoordinates(boxData: string): boxCoodinates {
 }
 
 function calculateDistance(box1: boxCoodinates, box2: boxCoodinates): number {
-  const distance = Math.sqrt(
-    Math.pow(box1.x - box2.x, 2) +
-      Math.pow(box1.y - box2.y, 2) +
-      Math.pow(box1.z - box2.z, 2)
-  );
+  const distance = Math.sqrt(Math.pow(box1.x - box2.x, 2) + Math.pow(box1.y - box2.y, 2) + Math.pow(box1.z - box2.z, 2));
   return distance;
 }
 
@@ -47,10 +43,7 @@ for (let i = 0; i < nmrOfBoxes; i++) {
   let circuit2 = i + 1;
 
   for (let j = circuit2; j < nmrOfBoxes; j++) {
-    const distance = calculateDistance(
-      extractCoordinates(dataRows[i]),
-      extractCoordinates(dataRows[j])
-    );
+    const distance = calculateDistance(extractCoordinates(dataRows[i]!), extractCoordinates(dataRows[j]!));
     circuit2 = j;
     circuitOptions.push({ circuit1, circuit2, distance });
   }
@@ -63,8 +56,8 @@ let lastConnectionMade = 0;
 
 for (let j = 0; j < circuitOptions.length; j++) {
   const option = circuitOptions[j];
-  const box1 = option?.circuit1;
-  const box2 = option?.circuit2;
+  const box1 = String(option!.circuit1);
+  const box2 = String(option!.circuit2);
 
   const startNmrCircuits = circuits.length;
 
@@ -87,7 +80,7 @@ for (let j = 0; j < circuitOptions.length; j++) {
 
     if (firstCircuit > -1 && secondCircuit == -1) {
       // push to firstCircuit
-      circuits[firstCircuit].push(box2);
+      circuits[firstCircuit]!.push(box2);
     }
 
     if (firstCircuit > -1 && secondCircuit > -1) {
@@ -109,7 +102,7 @@ for (let j = 0; j < circuitOptions.length; j++) {
       circuits.push([box1, box2]);
     }
 
-    if (circuits[0].length == nmrOfBoxes && lastConnectionMade == 0) {
+    if (circuits[0]!.length == nmrOfBoxes && lastConnectionMade == 0) {
       lastConnectionMade = j;
       break;
     }
@@ -119,12 +112,10 @@ for (let j = 0; j < circuitOptions.length; j++) {
 circuits.sort((a, b) => b.length - a.length);
 
 // const answer1 = circuits[0].length * circuits[1].length * circuits[2].length;
-const answer2 =
-  extractCoordinates(dataRows[circuitOptions[lastConnectionMade]?.circuit1]).x *
-  extractCoordinates(dataRows[circuitOptions[lastConnectionMade]?.circuit2]).x;
+const answer2 = extractCoordinates(dataRows[circuitOptions[lastConnectionMade]!.circuit1]!).x * extractCoordinates(dataRows[circuitOptions[lastConnectionMade]!.circuit2]!).x;
 
 // console.log(answer1); //67.488
 console.log(answer2);
 // part 2
 
-console.timeEnd("Tijdsduur");
+console.timeEnd('Tijdsduur');
